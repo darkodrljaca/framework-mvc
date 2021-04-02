@@ -1,0 +1,15 @@
+{
+    "name": "darko/framework-mvc",
+    "authors": [
+        {
+            "name": "darko",
+            "email": "darkodrljaca@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "require": {}
+}
