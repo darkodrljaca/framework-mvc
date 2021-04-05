@@ -36,7 +36,7 @@ class Router {
         
         $path = $this->request->getPath();
         
-        $method = $this->request->getMethod();        
+        $method = $this->request->method();        
         
         // if route in index.php doesn't exist then return false:
         $callback = $this->routes[$method][$path] ?? false;        
@@ -51,7 +51,8 @@ class Router {
         }                
         
         if(is_array($callback)) {
-            $callback[0] = new $callback[0]();
+            Application::$app->controller = new $callback[0]();
+            $callback[0] = Application::$app->controller;
         }                
         
         
@@ -78,9 +79,11 @@ class Router {
     
     protected function layoutContent() {
         
+        $layout = Application::$app->controller->layout;
+        
         // output caching:
         ob_start();
-        include_once Application::$root_directory."/views/layouts/main.php";
+        include_once Application::$root_directory."/views/layouts/$layout.php";
         return ob_get_clean();
     }
     
