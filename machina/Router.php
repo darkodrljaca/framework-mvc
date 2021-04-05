@@ -20,9 +20,15 @@ class Router {
     }
 
     
-    public function fillRoutes($path, $callback) {
+    public function get($path, $callback) {
         
         $this->routes['get'][$path] = $callback;
+        
+    }
+    
+    public function post($path, $callback) {
+        
+        $this->routes['post'][$path] = $callback;
         
     }
     
@@ -37,27 +43,40 @@ class Router {
         
         if($callback === false) {
             $this->response->statusCode(404);
-            return "Not found";            
+            return $this->renderView("not-found");            
         }                
         
         if(is_string($callback)) {
             return $this->renderView($callback);
-        }
+        }                
         
-        // execute function from index.php fillRoutes method, second parameter:
-        return call_user_func($callback);
+        if(is_array($callback)) {
+            $callback[0] = new $callback[0]();
+        }                
+        
+        
+        
+        // execute function from index.php get or post method, second parameter:
+        return call_user_func($callback, $this->request);
         
     }
     
-    public function renderView($view) {
+    public function renderView($view, $params = []) {
         
-        $layoutContent = $this->layout();
-        $viewContent = $this->renderContent($view);
+        $layoutContent = $this->layoutContent();
+        $viewContent = $this->viewContent($view, $params);
         return str_replace('{{ content }}', $viewContent, $layoutContent);        
         
     }
     
-    protected function layout() {
+    public function renderContent($viewContent) {
+        
+        $layoutContent = $this->layoutContent();        
+        return str_replace('{{ content }}', $viewContent, $layoutContent);        
+        
+    }
+    
+    protected function layoutContent() {
         
         // output caching:
         ob_start();
@@ -65,7 +84,12 @@ class Router {
         return ob_get_clean();
     }
     
-    protected function renderContent($view) {
+    protected function viewContent($view, $params) {                
+
+        foreach ($params as $key => $value) {
+            $$key = $value;
+        }                
+        
         ob_start();
         include_once Application::$root_directory."/views/$view.php";
         return ob_get_clean();

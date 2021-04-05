@@ -25,12 +25,18 @@
               <li class="nav-item">
                 <a class="nav-link" href="/about">About Us</a>
               </li>              
+              <li class="nav-item">
+                <a class="nav-link" href="/contact">Contact</a>
+              </li>
             </ul>            
           </div>
         </div>
-      </nav>  
-      
-    {{ content }}
+      </nav>        
+   
+      <div class="container">
+          {{ content }}
+      </div>
+                
 
     <!-- Optional JavaScript; choose one of the two! -->
 
