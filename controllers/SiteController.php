@@ -25,6 +25,10 @@ class SiteController extends Controller {
         return $this->render('contact');
     }
     
+    public function about() {
+        return $this->render('about-us');
+    }
+    
     public function handleContact(Request $request) {
         
         $body = $request->getBody(); 

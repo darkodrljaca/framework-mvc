@@ -6,14 +6,27 @@ ini_set("track_errors", 1);
 ini_set("html_errors", 1);
 error_reporting(E_ALL);
 
-require_once __DIR__.'/../vendor/autoload.php';
 use app\machina\Application;
 use app\controllers\SiteController;
 use app\controllers\AuthenticationController;
 
-$app = new Application(dirname(__DIR__));
+require_once __DIR__.'/../vendor/autoload.php';
 
-$app->router->get('/about', 'about-us');
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
+
+$config = [
+    'db' => [
+        'dsn' => $_ENV['DB_DSN'],
+        'user' => $_ENV['DB_USER'],
+        'password' => $_ENV['DB_PASSWORD'],
+    ]
+];
+
+$app = new Application(dirname(__DIR__), $config);
+
+// $app->router->get('/about', 'about-us');
+$app->router->get('/about', [SiteController::class, 'about']);
 $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
 $app->router->post('/contact', [SiteController::class, 'handleContact']);
