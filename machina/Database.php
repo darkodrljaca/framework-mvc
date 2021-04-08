@@ -43,6 +43,6 @@ class Database {
         $statement = $this->pdo->prepare("SELECT migration FROM migrations");
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
-    }
+    } 
     
 }
