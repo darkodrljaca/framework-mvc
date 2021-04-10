@@ -27,8 +27,8 @@ class Database {
         $this->getAppliedMigrations();
         
         $files = scandir(Application::$root_directory.'/migrations');
-        var_dump($files);
-        exit;
+//        var_dump($files);
+//        exit;
     }
     
     public function createMigrationsTable() {
