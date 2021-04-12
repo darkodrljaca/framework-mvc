@@ -7,8 +7,6 @@ ini_set("html_errors", 1);
 error_reporting(E_ALL);
 
 use app\machina\Application;
-use app\controllers\SiteController;
-use app\controllers\AuthenticationController;
 
 require_once __DIR__.'/vendor/autoload.php';
 
