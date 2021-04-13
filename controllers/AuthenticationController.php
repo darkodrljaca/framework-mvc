@@ -4,7 +4,7 @@
 namespace app\controllers;
 use app\machina\Controller;
 use app\machina\Request;
-use app\models\RegisterModel;
+use app\models\User;
 
 /**
  * Description of AuthenticationController
@@ -23,7 +23,7 @@ class AuthenticationController extends Controller {
     
     public function register(Request $request) {
         
-        $registerModel = new RegisterModel();         
+        $registerModel = new User();         
         
         if($request->isPost()) {
                         

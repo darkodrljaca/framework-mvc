@@ -3,24 +3,26 @@
 
 namespace app\models;
 
-use app\machina\Model;
+use app\machina\DbModel;
 
 /**
  * Description of RegisterModel
  *
  * @author darko
  */
-class RegisterModel extends Model {
+class User extends DbModel {
     
     public string $firstname = '';
     public string $lastname = '';
     public string $email = '';
+    public int $status = 1;
+    public string $created_at = '';
     public string $password = '';
     public string $confirmPassword = '';
     
     public function register() {
         
-        echo 'Creating new user';
+        return $this->save();        
         
     }
 
@@ -33,6 +35,19 @@ class RegisterModel extends Model {
             'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 50]],
             'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']],
         ];
+        
+    }
+    
+    public function attributes(): array {
+        
+        return ['firstname', 'lastname', 'email', 'password'];                    
+        
+    }
+    
+    
+    public function tableName(): string {
+        
+        return 'users';
         
     }
 
