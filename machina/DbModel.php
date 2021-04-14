@@ -19,14 +19,12 @@ abstract class DbModel extends Model {
     abstract public function attributes(): array;
     
     public function save() {   
-        
-        $this->created_at = date("Y-m-d H:i:s");
-        
+                
         $tableName = $this->tableName();        
         $attributes = $this->attributes(); 
          // adding created_at field into array:
-        array_splice($attributes, 3, 0, "status");              
-        array_splice($attributes, 4, 0, "created_at");
+//        array_splice($attributes, 3, 0, "status");              
+//        array_splice($attributes, 4, 0, "created_at");
         
         $params = array_map(fn($attr) => ":$attr", $attributes);
                

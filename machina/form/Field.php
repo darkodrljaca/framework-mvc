@@ -32,7 +32,7 @@ class Field {
         return sprintf('<div class="mb-3">
                             <label>%s</label>
                             <input type="%s" name="%s" value="%s" class="form-control%s">    
-                            <div calss="invalid-feedback">
+                            <div class="invalid-feedback">
                                %s
                             </div>
                         </div> ', 
