@@ -4,6 +4,7 @@
 namespace app\controllers;
 use app\machina\Controller;
 use app\machina\Request;
+use app\machina\Application;
 use app\models\User;
 
 /**
@@ -30,7 +31,9 @@ class AuthenticationController extends Controller {
             $user->loadData($request->getBody());                        
             
             if($user->validate() && $user->save()) {
-                return 'Success';
+                Application::$app->session->setFlash('success', 'You are registered');
+                Application::$app->response->redirect('/');
+                exit;
             }
                        
             
