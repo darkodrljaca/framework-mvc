@@ -14,9 +14,12 @@ abstract class DbModel extends Model {
         
     }
     
-    abstract public function tableName(): string;
+    abstract public static function tableName(): string;
     
     abstract public function attributes(): array;
+    
+    abstract public static function primaryKey(): string; 
+        
     
     public function save() {   
                 
@@ -38,6 +41,21 @@ abstract class DbModel extends Model {
         
         $statement->execute();
         return true;
+    }
+    
+    public static function findOne($where) {
+        // tableName is abstract method, 'static' corespond to actual class on which 
+        // the 'findOne()' will be called. We called 'findOne()' in User class.
+        $tableName = static::tableName();
+        $attributes = array_keys($where);
+        $sql = implode("AND", array_map(fn($attr) =>"$attr = :$attr", $attributes));
+        $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
+        foreach ($where as $key => $item) {
+            $statement->bindValue(":$key", $item);
+        }                
+        
+        $statement->execute();
+        return $statement->fetchObject(static::class);
     }
     
     public static function prepare($sql) {

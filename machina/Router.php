@@ -58,7 +58,7 @@ class Router {
         
         
         // execute function from index.php get or post method, second parameter:
-        return call_user_func($callback, $this->request);
+        return call_user_func($callback, $this->request, $this->response);
         
     }
     
@@ -97,5 +97,4 @@ class Router {
         include_once Application::$root_directory."/views/$view.php";
         return ob_get_clean();
     }
-    
 }

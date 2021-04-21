@@ -1,3 +1,8 @@
+<?php 
+
+/** @var $model User */
+
+?>
 <h1>Register</h1>
 
 <?php $form = \app\machina\form\Form::begin('', "post"); ?>

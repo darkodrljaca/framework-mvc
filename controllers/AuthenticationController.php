@@ -4,8 +4,10 @@
 namespace app\controllers;
 use app\machina\Controller;
 use app\machina\Request;
+use app\machina\Response;
 use app\machina\Application;
 use app\models\User;
+use app\models\LoginForm;
 
 /**
  * Description of AuthenticationController
@@ -14,11 +16,21 @@ use app\models\User;
  */
 class AuthenticationController extends Controller {
     
-    public function login() {
-        
+    public function login(Request $request, Response $response) {
+                
+        $loginForm = new LoginForm();
+        if($request->isPost()) {
+            $loginForm->loadData($request->getBody());
+            if($loginForm->validate() && $loginForm->login()) {
+                $response->redirect('/');                
+                return;
+            }
+        }
         $this->setLayout('auth');
         
-        return $this->render('login');
+        return $this->render('login', [
+            'model' => $loginForm
+        ]);
         
     }
     
@@ -47,6 +59,13 @@ class AuthenticationController extends Controller {
         return $this->render('register', [
                 'model' => $user
         ]);
+        
+    }
+    
+    public function logout(Request $request, Response $response) {
+        
+        Application::$app->logout();
+        $response->redirect('/');
         
     }
     
