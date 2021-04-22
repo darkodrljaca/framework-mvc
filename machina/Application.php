@@ -17,12 +17,13 @@ class Application {
     public Router $router;
     public Request $request;
     public static string $root_directory;
+    public string $layout = 'main';
     public string $userClass;
     public Response $response;
     public Session $session;
     public Database $db;
     public static Application $app;
-    public Controller $controller;    
+    public ?Controller $controller = null;    
     // ? this might be null:
     public ?DbModel $user;
     
@@ -61,7 +62,14 @@ class Application {
     
     public function run() {
         
-       echo $this->router->getPathAndMethod();
+        try {
+            echo $this->router->getPathAndMethod();
+        } catch (\Exception $ex) {
+            $this->response->statusCode($ex->getCode());
+            echo $this->router->renderView('_error', [
+                'exception' => $ex
+            ]);
+        }
         
     }
     

@@ -2,6 +2,7 @@
 
 namespace app\machina;
 
+use app\machina\exception\NotFoundException;
 /**
  * Description of Router
  *
@@ -41,9 +42,8 @@ class Router {
         // if route in index.php doesn't exist then return false:
         $callback = $this->routes[$method][$path] ?? false;        
         
-        if($callback === false) {
-            $this->response->statusCode(404);
-            return $this->renderView("not-found");            
+        if($callback === false) {            
+            throw new NotFoundException();
         }                
         
         if(is_string($callback)) {
@@ -51,8 +51,16 @@ class Router {
         }                
         
         if(is_array($callback)) {
-            Application::$app->controller = new $callback[0]();
-            $callback[0] = Application::$app->controller;
+            /** @var \app\machina\Controller $controller  */
+            $controller = new $callback[0]();
+            Application::$app->controller = $controller;
+            $controller->action = $callback[1];
+            $callback[0] = $controller;
+            
+            foreach($controller->getMiddlewares() as $middleware) {
+                $middleware->execute();
+            }
+            
         }                
         
         
@@ -79,7 +87,11 @@ class Router {
     
     protected function layoutContent() {
         
-        $layout = Application::$app->controller->layout;
+        
+        $layout = Application::$app->layout;
+        if(Application::$app->controller) {
+            $layout = Application::$app->controller->layout;
+        }                
         
         // output caching:
         ob_start();

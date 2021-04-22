@@ -8,6 +8,7 @@ use app\machina\Response;
 use app\machina\Application;
 use app\models\User;
 use app\models\LoginForm;
+use app\machina\middlewares\AuthMiddleware;
 
 /**
  * Description of AuthenticationController
@@ -15,6 +16,11 @@ use app\models\LoginForm;
  * @author darko
  */
 class AuthenticationController extends Controller {
+    
+    
+    public function __construct() {
+        $this->registerMiddleware(new AuthMiddleware(['profile']));
+    }
     
     public function login(Request $request, Response $response) {
                 
@@ -66,6 +72,12 @@ class AuthenticationController extends Controller {
         
         Application::$app->logout();
         $response->redirect('/');
+        
+    }
+    
+    public function profile() {
+        
+        return $this->render('profile');
         
     }
     

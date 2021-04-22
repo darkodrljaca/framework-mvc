@@ -2,15 +2,15 @@
 
 namespace app\machina;
 
-/**
- * Description of Controller
- *
- * @author darko
- */
+use app\machina\middlewares\BaseMiddleware;
+
 class Controller {
     
     
     public string $layout = 'main';
+    public string $action = '';
+    /** @var \app\machina\middlewares\BaseMiddleware[] */
+    protected array $middlewares = [];
     
     public function setLayout($layout) {
         
@@ -23,5 +23,17 @@ class Controller {
         return Application::$app->router->renderView($view, $params);
         
     }
+    
+    public function registerMiddleware(BaseMiddleware $middleware) {
+        
+        $this->middlewares[] = $middleware;
+        
+    }
+    
+    public function getMiddlewares(): array {
+        return $this->middlewares;
+    }
+
+
     
 }
