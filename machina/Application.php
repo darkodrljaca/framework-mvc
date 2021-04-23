@@ -8,6 +8,9 @@ namespace app\machina;
 
 use app\machina\Controller;
 use app\machina\DbModel;
+use app\machina\View;
+use app\machina\db\Database;
+use app\machina\UserModel;
 
 /**
  * @author darko
@@ -25,7 +28,8 @@ class Application {
     public static Application $app;
     public ?Controller $controller = null;    
     // ? this might be null:
-    public ?DbModel $user;
+    public ?UserModel $user;
+    public View $view;
     
     public function __construct($root_path, array $config) {
         
@@ -38,6 +42,8 @@ class Application {
         $this->router = new Router($this->request, $this->response);        
         
         $this->db = new Database($config['db']);
+        
+        $this->view = new View();
         
         
         $primaryValue = $this->session->get('user');
@@ -66,14 +72,14 @@ class Application {
             echo $this->router->getPathAndMethod();
         } catch (\Exception $ex) {
             $this->response->statusCode($ex->getCode());
-            echo $this->router->renderView('_error', [
+            echo $this->view->renderView('_error', [
                 'exception' => $ex
             ]);
         }
         
     }
     
-    public function login(DbModel $user) {
+    public function login(UserModel $user) {
         
         $this->user = $user;
         $primaryKey = $user->primaryKey();

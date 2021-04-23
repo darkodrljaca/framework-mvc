@@ -31,7 +31,7 @@ $app = new Application(dirname(__DIR__), $config);
 $app->router->get('/about', [SiteController::class, 'about']);
 $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
-$app->router->post('/contact', [SiteController::class, 'handleContact']);
+$app->router->post('/contact', [SiteController::class, 'contact']);
 
 $app->router->get('/login', [AuthenticationController::class, 'login']);
 $app->router->post('/login', [AuthenticationController::class, 'login']);
@@ -39,9 +39,6 @@ $app->router->get('/register', [AuthenticationController::class, 'register']);
 $app->router->post('/register', [AuthenticationController::class, 'register']);
 $app->router->get('/logout', [AuthenticationController::class, 'logout']);
 $app->router->get('/profile', [AuthenticationController::class, 'profile']);
-
-
-
 
 
 $app->run();

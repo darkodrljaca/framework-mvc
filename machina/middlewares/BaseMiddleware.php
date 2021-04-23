@@ -8,7 +8,7 @@ namespace app\machina\middlewares;
  */
 abstract class BaseMiddleware {
     
-    abstract public function execute(); 
+    abstract public function execute();         
     
     
 }

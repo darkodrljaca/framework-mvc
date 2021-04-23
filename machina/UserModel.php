@@ -2,7 +2,7 @@
 
 namespace app\machina;
 
-use app\machina\DbModel;
+use app\machina\db\DbModel;
 
 /**
  * Description of UserModel

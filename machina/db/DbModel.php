@@ -1,7 +1,10 @@
 <?php
 
 
-namespace app\machina;
+namespace app\machina\db;
+
+use app\machina\Model;
+use app\machina\Application;
 
 /**
  * Description of DbModel

@@ -3,7 +3,7 @@
 namespace app\machina\form;
 
 use app\machina\Model;
-use app\machina\form\Field;
+use app\machina\form\InputField;
 
 /**
  * Description of Form
@@ -22,7 +22,7 @@ class Form {
     }
     
     public function field(Model $model, $attribute) {
-        return new Field($model, $attribute);
+        return new InputField($model, $attribute);
     }
     
     

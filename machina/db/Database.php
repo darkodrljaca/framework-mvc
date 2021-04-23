@@ -1,7 +1,9 @@
 <?php
 
 
-namespace app\machina;
+namespace app\machina\db;
+
+use app\machina\Application;
 
 /**
  * Description of Database

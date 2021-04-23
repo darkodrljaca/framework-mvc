@@ -47,7 +47,7 @@ class Router {
         }                
         
         if(is_string($callback)) {
-            return $this->renderView($callback);
+            return Application::$app->view->renderView($callback);
         }                
         
         if(is_array($callback)) {
@@ -55,7 +55,7 @@ class Router {
             $controller = new $callback[0]();
             Application::$app->controller = $controller;
             $controller->action = $callback[1];
-            $callback[0] = $controller;
+            $callback[0] = $controller;                       
             
             foreach($controller->getMiddlewares() as $middleware) {
                 $middleware->execute();
@@ -63,50 +63,10 @@ class Router {
             
         }                
         
-        
-        
         // execute function from index.php get or post method, second parameter:
         return call_user_func($callback, $this->request, $this->response);
         
-    }
+    }        
     
-    public function renderView($view, $params = []) {
-        
-        $layoutContent = $this->layoutContent();
-        $viewContent = $this->viewContent($view, $params);
-        return str_replace('{{ content }}', $viewContent, $layoutContent);        
-        
-    }
     
-    public function renderContent($viewContent) {
-        
-        $layoutContent = $this->layoutContent();        
-        return str_replace('{{ content }}', $viewContent, $layoutContent);        
-        
-    }
-    
-    protected function layoutContent() {
-        
-        
-        $layout = Application::$app->layout;
-        if(Application::$app->controller) {
-            $layout = Application::$app->controller->layout;
-        }                
-        
-        // output caching:
-        ob_start();
-        include_once Application::$root_directory."/views/layouts/$layout.php";
-        return ob_get_clean();
-    }
-    
-    protected function viewContent($view, $params) {                
-
-        foreach ($params as $key => $value) {
-            $$key = $value;
-        }                
-        
-        ob_start();
-        include_once Application::$root_directory."/views/$view.php";
-        return ob_get_clean();
-    }
 }
